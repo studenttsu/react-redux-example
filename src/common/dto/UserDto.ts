@@ -1,10 +1,8 @@
-import { Guid } from '../types';
-
 export interface UserDto {
-    id: Guid;
+    id: number;
     firstName: string;
     lastName: string;
-    patronymic: string;
+    middleName: string;
+    organizationId: number;
     email: string;
-    organization: string;
 }

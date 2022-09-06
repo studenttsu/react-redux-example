@@ -3,7 +3,7 @@ import { Button, Card, PageHeader } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import { declensionOfWords } from 'common/utils';
-import { fetchUsersAction, useUsersStore } from './state';
+import { fetchUsersAction, removeUsersAction, useUsersStore } from './state';
 import { UsersTable } from './components/UsersTable';
 
 export const UsersPage = () => {
@@ -17,16 +17,18 @@ export const UsersPage = () => {
         Удалить {selectedIds.length} {declensionOfWords(selectedIds.length, ['запись', 'записи', 'записей'])}
     </>, [selectedIds]);
 
+    const removeUsers = () => removeUsersAction(selectedIds);
+
     return (
         <>
             <PageHeader
                 title={selectedIds.length > 0 && (
-                    <Button icon={<DeleteOutlined />}>{removeButtonText}</Button>
+                    <Button icon={<DeleteOutlined />} onClick={removeUsers}>{removeButtonText}</Button>
                 )}
                 extra={<Button type="primary">Добавить пользователя</Button>}
             />
 
-            <Card bordered={false}>
+            <Card>
                 <UsersTable />
             </Card>
         </>

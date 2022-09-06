@@ -1,6 +1,4 @@
-import { Guid } from '../types';
-
 export interface IdNameDto {
-    id: Guid;
+    id: number;
     name: string;
 }

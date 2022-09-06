@@ -4,8 +4,7 @@ import { Button, Table, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { UserDto } from 'common/dto';
-import { confirm } from 'common/utils';
-import { useUsersStore, selectUserRowsAction } from '../state';
+import { useUsersStore, selectUserRowsAction, removeUsersAction } from '../state';
 
 export const UsersTable = () => {
     const { pageData, isPending, totalRecords, selectedIds } = useUsersStore();
@@ -14,37 +13,39 @@ export const UsersTable = () => {
         console.log('Редактировать пользователя');
     };
 
-    const remove = () => {
-        confirm('Удалить пользователя?', 'Удалить')
-            .then(() => console.log('Удалить'));
-    };
+    const remove = (userId: number) => removeUsersAction([userId]);
 
     const columns: ColumnsType<UserDto> = useMemo(() => {
         return [
             {
                 title: 'Пользователь',
-                render: (row: UserDto) => `${row.lastName} ${row.firstName} ${row.patronymic}`,
+                key: 'user',
+                render: (row: UserDto) => `${row.lastName} ${row.firstName} ${row.middleName}`,
             },
             {
                 title: 'Организация',
-                dataIndex: 'organization'
+                key: 'organization',
+                dataIndex: 'organizationId',
+                width: '30%'
             },
             {
                 title: 'E-mail',
-                dataIndex: 'email'
+                key: 'email',
+                dataIndex: 'email',
+                width: '30%'
             },
             {
-                title: '',
+                key: 'actions',
                 align: 'right',
                 width: 100,
-                render: () => (
+                render: (row: UserDto) => (
                     <>
                         <Tooltip title="Редактировать">
                             <Button type="text" shape="circle" icon={<EditOutlined />} onClick={edit} />
                         </Tooltip>
 
                         <Tooltip title="Удалить">
-                            <Button type="text" shape="circle" icon={<DeleteOutlined />} onClick={remove} />
+                            <Button type="text" shape="circle" icon={<DeleteOutlined />} onClick={() => remove(row.id)} />
                         </Tooltip>
                     </>
                 )
@@ -57,7 +58,8 @@ export const UsersTable = () => {
             columns={columns}
             dataSource={pageData}
             loading={isPending}
-            size="small"
+            size="middle"
+            rowKey="id"
             rowSelection={{
                 selectedRowKeys: selectedIds,
                 onChange: selectUserRowsAction

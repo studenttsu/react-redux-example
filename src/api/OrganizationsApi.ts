@@ -2,7 +2,8 @@ import { IdNameDto } from 'common/dto';
 
 class OrganizationsApi {
     getOrganizations(): Promise<IdNameDto[]> {
-        return Promise.resolve([]);
+        return fetch('/mock/organizations.json')
+            .then(response => response.json());
     }
 }
 

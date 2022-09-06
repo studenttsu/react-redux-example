@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit';
 import { IPaginatedData } from 'common/interfaces';
 import { UserDto } from 'common/dto';
-import { fetchUsers } from './actions';
+import { fetchUsers, removeUsers } from './actions';
 
 interface UsersState extends IPaginatedData<UserDto> {
   isPending: boolean;
-  selectedIds: string[];
+  selectedIds: number[];
 }
 
 const usersSlice = createSlice<UsersState, SliceCaseReducers<UsersState>>({
@@ -20,11 +20,8 @@ const usersSlice = createSlice<UsersState, SliceCaseReducers<UsersState>>({
     setPendingState(state, action: PayloadAction<boolean>) {
       state.isPending = action.payload;
     },
-    toggleSelectedIds(state, action: PayloadAction<string[]>) {
+    toggleSelectedIds(state, action: PayloadAction<number[]>) {
       state.selectedIds = action.payload;
-    },
-    resetSelectedIds(state) {
-      state.selectedIds = [];
     },
   },
   extraReducers: (builder) => {
@@ -38,8 +35,13 @@ const usersSlice = createSlice<UsersState, SliceCaseReducers<UsersState>>({
     builder.addCase(fetchUsers.rejected, (state) => {
       state.isPending = false;
     });
+
+    builder.addCase(removeUsers.fulfilled, (state, action) => {
+      const userIds = action.payload;
+      state.pageData = state.pageData.filter(item => !userIds.includes(item.id));
+      state.selectedIds = state.selectedIds.filter(id => !userIds.includes(id));    });
   },
 });
 
-export const { setPendingState, toggleSelectedIds, resetSelectedIds } = usersSlice.actions;
+export const { setPendingState, toggleSelectedIds } = usersSlice.actions;
 export default usersSlice.reducer;
