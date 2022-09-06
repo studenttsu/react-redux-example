@@ -67,7 +67,7 @@ export const UsersTable = ({ onUserEdit }: UsersTableProps) => {
                 pageSize: 10,
                 total: totalRecords,
                 showTotal: () => <>Всего: {totalRecords}</>,
-                // hideOnSinglePage: true
+                hideOnSinglePage: true
             }} />
     )
 }

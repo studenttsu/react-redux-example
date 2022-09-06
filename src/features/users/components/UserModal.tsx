@@ -1,9 +1,9 @@
 import { Form, Input, Modal, ModalProps, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { UserDto } from 'common/dto';
+import { CreateUserDto, UserDto } from 'common/dto';
 import { useEffect } from 'react';
 
-export interface UserFormData extends Omit<UserDto, 'id'> {}
+type UserFormData = CreateUserDto;
 
 interface UserModalProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
     user?: UserDto;
