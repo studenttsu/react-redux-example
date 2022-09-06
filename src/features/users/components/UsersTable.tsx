@@ -6,13 +6,12 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { UserDto } from 'common/dto';
 import { useUsersStore, selectUserRowsAction, removeUsersAction } from '../state';
 
-export const UsersTable = () => {
+interface UsersTableProps {
+    onUserEdit(user: UserDto): void;
+}
+
+export const UsersTable = ({ onUserEdit }: UsersTableProps) => {
     const { pageData, isPending, totalRecords, selectedIds } = useUsersStore();
-
-    const edit = () => {
-        console.log('Редактировать пользователя');
-    };
-
     const remove = (userId: number) => removeUsersAction([userId]);
 
     const columns: ColumnsType<UserDto> = useMemo(() => {
@@ -20,7 +19,7 @@ export const UsersTable = () => {
             {
                 title: 'Пользователь',
                 key: 'user',
-                render: (row: UserDto) => `${row.lastName} ${row.firstName} ${row.middleName}`,
+                render: (user: UserDto) => `${user.lastName} ${user.firstName} ${user.middleName}`,
             },
             {
                 title: 'Организация',
@@ -38,14 +37,14 @@ export const UsersTable = () => {
                 key: 'actions',
                 align: 'right',
                 width: 100,
-                render: (row: UserDto) => (
+                render: (user: UserDto) => (
                     <>
                         <Tooltip title="Редактировать">
-                            <Button type="text" shape="circle" icon={<EditOutlined />} onClick={edit} />
+                            <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => onUserEdit(user)} />
                         </Tooltip>
 
                         <Tooltip title="Удалить">
-                            <Button type="text" shape="circle" icon={<DeleteOutlined />} onClick={() => remove(row.id)} />
+                            <Button type="text" shape="circle" icon={<DeleteOutlined />} onClick={() => remove(user.id)} />
                         </Tooltip>
                     </>
                 )
@@ -65,9 +64,10 @@ export const UsersTable = () => {
                 onChange: selectUserRowsAction
             }}
             pagination={{
-                total: totalRecords,
                 pageSize: 10,
-                hideOnSinglePage: true
+                total: totalRecords,
+                showTotal: () => <>Всего: {totalRecords}</>,
+                // hideOnSinglePage: true
             }} />
     )
 }

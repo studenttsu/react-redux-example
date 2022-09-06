@@ -6,3 +6,5 @@ export interface UserDto {
     organizationId: number;
     email: string;
 }
+
+export interface CreateUserDto extends Omit<UserDto, 'id'> {}

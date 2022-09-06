@@ -1,13 +1,37 @@
-import { Form, Input, Modal, Select } from 'antd';
+import { Form, Input, Modal, ModalProps, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { UserDto } from 'common/dto';
+import { useEffect } from 'react';
 
-export const UserModal = () => {
+export interface UserFormData extends Omit<UserDto, 'id'> {}
+
+interface UserModalProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
+    user?: UserDto;
+    onSave(date: UserFormData): void;
+    onClose(): void;
+}
+
+export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) => {
     const [form] = useForm();
 
+    useEffect(() => {
+        if (user) {
+            form.setFieldsValue(user);
+        }
+    }, [user]);
+
+    const onSubmit = (formData: UserFormData) => {
+        onSave(formData);
+        onClose();
+    };
+
+    const reset = () => form.resetFields();
+
     return (
-      <Modal title="Пользователь" onOk={form.submit}>
+      <Modal {...rest} title="Пользователь" onOk={form.submit} onCancel={onClose} afterClose={reset}>
         <Form
             form={form}
+            onFinish={onSubmit}
             labelCol={{ span: 6 }}
         >
             <Form.Item
@@ -35,7 +59,7 @@ export const UserModal = () => {
 
             <Form.Item
                 label="Организация"
-                name="firstName"
+                name="organizationId"
             >
                 <Select placeholder="Выберите из списка">
                     <Select.Option>111</Select.Option>

@@ -1,14 +1,18 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Card, PageHeader } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import { declensionOfWords } from 'common/utils';
-import { fetchUsersAction, removeUsersAction, useUsersStore } from './state';
+import { UserDto } from 'common/dto';
+
+import { createUserAction, editUserAction, fetchUsersAction, removeUsersAction, useUsersStore } from './state';
 import { UsersTable } from './components/UsersTable';
-import { UserModal } from 'features/users/components/UserModal';
+import { UserFormData, UserModal } from './components/UserModal';
 
 export const UsersPage = () => {
     const { selectedIds } = useUsersStore();
+    const [currentUser, setCurrentUser] = useState<UserDto>();
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
     useEffect(() => {
         fetchUsersAction();
@@ -20,20 +24,45 @@ export const UsersPage = () => {
 
     const removeUsers = () => removeUsersAction(selectedIds);
 
+    const openEditableModal = (user: UserDto) => {
+        setCurrentUser(user);
+        setIsModalVisible(true);
+    };
+
+    const openCreatableModal = () => setIsModalVisible(true);
+
+    const closeModal = () => {
+        setCurrentUser(undefined);
+        setIsModalVisible(false);
+    };
+
+    const editOrCreateUser = (data: UserFormData) => {
+        if (currentUser) {
+            editUserAction({...currentUser, ...data});
+        } else {
+            createUserAction(data);
+        }
+    };
+
     return (
         <>
             <PageHeader
                 title={selectedIds.length > 0 && (
                     <Button icon={<DeleteOutlined />} onClick={removeUsers}>{removeButtonText}</Button>
                 )}
-                extra={<Button type="primary">Добавить пользователя</Button>}
+                extra={<Button type="primary" onClick={openCreatableModal}>Добавить пользователя</Button>}
             />
 
             <Card>
-                <UsersTable />
+                <UsersTable onUserEdit={openEditableModal} />
             </Card>
 
-            <UserModal />
+            <UserModal
+                user={currentUser}
+                open={isModalVisible}
+                onClose={closeModal}
+                onSave={editOrCreateUser}
+            />
         </>
     );
 }

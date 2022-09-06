@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit';
 import { IPaginatedData } from 'common/interfaces';
 import { UserDto } from 'common/dto';
-import { fetchUsers, removeUsers } from './actions';
+import { createUser, fetchUsers, removeUsers, updateUser } from './actions';
 
-interface UsersState extends IPaginatedData<UserDto> {
+export interface UsersState extends IPaginatedData<UserDto> {
   isPending: boolean;
   selectedIds: number[];
 }
@@ -27,19 +27,33 @@ const usersSlice = createSlice<UsersState, SliceCaseReducers<UsersState>>({
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       const { totalRecords, pageData } = action.payload;
-      state.isPending = false;
       state.totalRecords = totalRecords;
       state.pageData = pageData;
-    });
-
-    builder.addCase(fetchUsers.rejected, (state) => {
-      state.isPending = false;
     });
 
     builder.addCase(removeUsers.fulfilled, (state, action) => {
       const userIds = action.payload;
       state.pageData = state.pageData.filter(item => !userIds.includes(item.id));
-      state.selectedIds = state.selectedIds.filter(id => !userIds.includes(id));    });
+      state.selectedIds = state.selectedIds.filter(id => !userIds.includes(id));
+      state.totalRecords = state.totalRecords - userIds.length;
+    });
+
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      state.pageData = state.pageData.concat(action.payload);
+      state.totalRecords = state.totalRecords + 1;
+    });
+
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      const user = action.payload;
+
+      state.pageData = state.pageData.map(item => {
+        if (item.id === user.id) {
+          return user;
+        }
+
+        return item;
+      });
+    });
   },
 });
 
