@@ -1,27 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Button, Card, PageHeader } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useAppDispatch } from 'store';
 
-import { fetchUsers, useUsersStore } from 'features/users/state';
+import { declensionOfWords } from 'common/utils';
+import { fetchUsersAction, useUsersStore } from './state';
 import { UsersTable } from './components/UsersTable';
-import { declensionOfWords } from 'common/utils/declensionOfWords';
 
 export const UsersPage = () => {
-    const dispatch = useAppDispatch();
     const { selectedIds } = useUsersStore();
 
     useEffect(() => {
-        dispatch(fetchUsers({ pageSize: 10, pageIndex: 0 }));
+        fetchUsersAction();
     }, []);
+
+    const removeButtonText = useMemo(() => <>
+        Удалить {selectedIds.length} {declensionOfWords(selectedIds.length, ['запись', 'записи', 'записей'])}
+    </>, [selectedIds]);
 
     return (
         <>
             <PageHeader
                 title={selectedIds.length > 0 && (
-                    <Button icon={<DeleteOutlined />}>
-                        Удалить {selectedIds.length} {declensionOfWords(selectedIds.length, ['запись', 'записи', 'записей'])}
-                    </Button>
+                    <Button icon={<DeleteOutlined />}>{removeButtonText}</Button>
                 )}
                 extra={<Button type="primary">Добавить пользователя</Button>}
             />

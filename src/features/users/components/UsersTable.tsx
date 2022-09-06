@@ -1,18 +1,14 @@
-import { Key, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { Button, Table, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { UserDto } from 'common/dto';
-import { useAppDispatch } from 'store';
-import { toggleSelectedIds, useUsersStore } from 'features/users/state';
 import { confirm } from 'common/utils';
+import { useUsersStore, selectUserRowsAction } from '../state';
 
 export const UsersTable = () => {
-    const dispatch = useAppDispatch();
     const { pageData, isPending, totalRecords, selectedIds } = useUsersStore();
-
-    const selectUserRows = (selectedKeys: Key[]) => dispatch(toggleSelectedIds(selectedKeys));
 
     const edit = () => {
         console.log('Редактировать пользователя');
@@ -61,13 +57,15 @@ export const UsersTable = () => {
             columns={columns}
             dataSource={pageData}
             loading={isPending}
+            size="small"
             rowSelection={{
                 selectedRowKeys: selectedIds,
-                onChange: selectUserRows
+                onChange: selectUserRowsAction
             }}
             pagination={{
                 total: totalRecords,
-                pageSize: 10
+                pageSize: 10,
+                hideOnSinglePage: true
             }} />
     )
 }
