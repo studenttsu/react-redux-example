@@ -29,7 +29,7 @@ export const UsersTable = () => {
                 width: '30%'
             },
             {
-                title: 'E-mail',
+                title: 'Email',
                 key: 'email',
                 dataIndex: 'email',
                 width: '30%'

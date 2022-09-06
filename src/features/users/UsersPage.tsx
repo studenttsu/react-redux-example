@@ -5,6 +5,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { declensionOfWords } from 'common/utils';
 import { fetchUsersAction, removeUsersAction, useUsersStore } from './state';
 import { UsersTable } from './components/UsersTable';
+import { UserModal } from 'features/users/components/UserModal';
 
 export const UsersPage = () => {
     const { selectedIds } = useUsersStore();
@@ -31,6 +32,8 @@ export const UsersPage = () => {
             <Card>
                 <UsersTable />
             </Card>
+
+            <UserModal />
         </>
     );
 }

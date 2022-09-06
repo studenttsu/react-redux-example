@@ -11,6 +11,6 @@ export const fetchUsers = createAsyncThunk('users/fetch', ({ pageSize, pageIndex
 });
 
 export const removeUsers = createAsyncThunk('users/removeUsers', (userIds: number[] = []) => {
-  return confirm(`Удалить ${userIds.length ? 'пользователей' : 'пользователя'}?`, 'Удалить')
+  return confirm(`Удалить ${userIds.length > 1 ? 'пользователей' : 'пользователя'}?`, 'Удалить')
       .then(() => userIds);
 });

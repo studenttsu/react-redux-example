@@ -5,15 +5,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
+import { ConfigProvider } from 'antd';
+import ruRU from 'antd/lib/locale/ru_RU';
 import { store } from 'store';
+
+const validateMessages = {
+    required: 'Обязательно к заполнению'
+};
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
       <Provider store={store}>
-          <App />
+          <ConfigProvider locale={ruRU} form={{ validateMessages }}>
+              <App />
+          </ConfigProvider>
       </Provider>
   </React.StrictMode>
 );
