@@ -3,7 +3,7 @@ import { useForm } from 'antd/es/form/Form';
 import { CreateUserDto, UserDto } from 'common/dto';
 import { useEffect } from 'react';
 
-type UserFormData = CreateUserDto;
+export type UserFormData = CreateUserDto;
 
 interface UserModalProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
     user?: UserDto;
