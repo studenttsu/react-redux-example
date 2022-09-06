@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { UsersApi } from 'api';
-import { setPendingState, UsersState } from './slice';
+import { setPendingState } from './slice';
 import { confirm } from 'common/utils';
 import { CreateUserDto, UserDto } from 'common/dto';
 import { AppState } from 'store';
