@@ -20,13 +20,8 @@ const usersSlice = createSlice<UsersState, SliceCaseReducers<UsersState>>({
     setPendingState(state, action: PayloadAction<boolean>) {
       state.isPending = action.payload;
     },
-    toggleSelectedIds(state, action: PayloadAction<string>) {
-      const id = action.payload;
-      const isSelected = state.selectedIds.includes(id);
-
-      state.selectedIds = isSelected
-        ? state.selectedIds.filter(x => x !== id)
-        : state.selectedIds.concat(id);
+    toggleSelectedIds(state, action: PayloadAction<string[]>) {
+      state.selectedIds = action.payload;
     },
     resetSelectedIds(state) {
       state.selectedIds = [];

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import organizationsReducer from './organizations/slice';
-import usersReducer from './users/slice';
+import usersReducer from 'features/users/state/slice';
 
 const { REACT_APP_DEV } = process.env;
 
