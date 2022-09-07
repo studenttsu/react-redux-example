@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UsersApi } from 'api';
-import { setPendingState } from './slice';
-import { confirm } from 'common/utils';
 import { CreateUserDto, UserDto } from 'common/dto';
 import { AppState } from 'store';
+import { UsersApi } from 'api';
+
+import { setPendingState } from './slice';
 
 type FetchUsersPayload = { pageSize: number; pageIndex: number };
 
@@ -15,13 +15,11 @@ export const fetchUsers = createAsyncThunk('users/fetch', ({ pageSize, pageIndex
 });
 
 export const removeUsers = createAsyncThunk('users/removeUsers', (userIds: number[] = [], thunkAPI) => {
-  return confirm(`Удалить ${userIds.length > 1 ? 'пользователей' : 'пользователя'}?`, 'Удалить')
-      .then(() => {
-        thunkAPI.dispatch(setPendingState(true));
-        return Promise.all(userIds.map(UsersApi.remove))
-      })
-      .then(() => userIds)
-      .finally(() => thunkAPI.dispatch(setPendingState(false)));
+    thunkAPI.dispatch(setPendingState(true));
+
+    return Promise.all(userIds.map(UsersApi.remove))
+        .then(() => userIds)
+        .finally(() => thunkAPI.dispatch(setPendingState(false)));
 });
 
 export const createUser = createAsyncThunk('users/create', (user: CreateUserDto, thunkAPI) => {

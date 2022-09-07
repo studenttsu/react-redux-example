@@ -1,5 +1,4 @@
 import { Form, Input, Modal, ModalProps, Select } from 'antd';
-import { useForm } from 'antd/es/form/Form';
 import { useEffect } from 'react';
 
 import { fetchOrganizationsActions, useOrganizationsStore } from 'store/organizations';
@@ -14,7 +13,7 @@ interface UserModalProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
 }
 
 export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) => {
-    const [form] = useForm();
+    const [form] = Form.useForm();
     const { organizationsList } = useOrganizationsStore();
 
     useEffect(() => {

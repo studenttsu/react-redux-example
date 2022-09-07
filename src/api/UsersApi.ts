@@ -1,11 +1,18 @@
+import axios from 'axios';
 import { CreateUserDto, UserDto } from 'common/dto';
 import { IPaginatedData } from 'common/interfaces';
 
 class UsersApi {
     getUsers(): Promise<IPaginatedData<UserDto>> {
-        return fetch('/mock/users.json')
-            .then(response => response.json())
-            .then(data => ({ totalRecords: data.users.length, pageData: data.users }));
+        return axios('/mock/users.json', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => ({
+                totalRecords: response.data.users.length,
+                pageData: response.data.users
+            }));
     }
 
     create(data: CreateUserDto, usersLength: number): Promise<UserDto> {

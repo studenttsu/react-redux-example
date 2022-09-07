@@ -1,10 +1,14 @@
+import axios from 'axios';
 import { OrganizationShortDto } from 'common/dto';
 
 class OrganizationsApi {
     getOrganizations(): Promise<OrganizationShortDto[]> {
-        return fetch('/mock/organizations.json')
-            .then(response => response.json())
-            .then(data => data.organizations);
+        return axios('/mock/organizations.json', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.data.organizations);
     }
 }
 

@@ -5,7 +5,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { declensionOfWords } from 'common/utils';
 import { UserDto } from 'common/dto';
 
-import { createUserAction, editUserAction, fetchUsersAction, removeUsersAction, useUsersStore } from './state';
+import { createUserAction, updateUserAction, fetchUsersAction, removeUsersAction, useUsersStore } from './state';
 import { UsersTable } from './components/UsersTable';
 import { UserFormData, UserModal } from './components/UserModal';
 
@@ -39,7 +39,7 @@ export const UsersPage = () => {
 
     const editOrCreateUser = (data: UserFormData) => {
         if (currentUser) {
-            editUserAction({...currentUser, ...data});
+            updateUserAction({...currentUser, ...data});
         } else {
             createUserAction(data);
         }
