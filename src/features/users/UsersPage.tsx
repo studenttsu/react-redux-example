@@ -18,6 +18,7 @@ export const UsersPage = () => {
         fetchUsersAction();
     }, []);
 
+    // TODO: Убрать в отдельный компонент
     const removeButtonText = useMemo(() => <>
         Удалить {selectedIds.length} {declensionOfWords(selectedIds.length, ['запись', 'записи', 'записей'])}
     </>, [selectedIds]);

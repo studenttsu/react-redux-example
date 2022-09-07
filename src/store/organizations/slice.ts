@@ -1,34 +1,26 @@
 import { createSlice, PayloadAction, SliceCaseReducers } from '@reduxjs/toolkit';
-import { fetchOrganizationList } from './actions';
-import { IdNameDto } from 'common/dto';
+import { fetchOrganizations } from './actions';
+import { OrganizationShortDto } from 'common/dto';
 
-interface OrganizationsState {
-  organizationList: IdNameDto[];
+export interface OrganizationsState {
+  organizationsList: OrganizationShortDto[];
   isPending: boolean;
 }
 
 const organizationsSlice = createSlice<OrganizationsState, SliceCaseReducers<OrganizationsState>>({
   name: 'organizations',
   initialState: {
-    organizationList: [],
+    organizationsList: [],
     isPending: false,
   },
   reducers: {
-    // Changing pending state of fetching organizations
     setPendingState(state, action: PayloadAction<boolean>) {
       state.isPending = action.payload;
     },
   },
   extraReducers: (builder) => {
-    // Fetch request successful complete
-    builder.addCase(fetchOrganizationList.fulfilled, (state, action) => {
-      state.organizationList = action.payload;
-      state.isPending = false;
-    });
-
-    // Fetch request failed
-    builder.addCase(fetchOrganizationList.rejected, (state) => {
-      state.isPending = false;
+    builder.addCase(fetchOrganizations.fulfilled, (state, action) => {
+      state.organizationsList = action.payload;
     });
   },
 });

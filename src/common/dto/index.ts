@@ -1,2 +1,2 @@
-export * from './IdNameDto';
+export * from 'common/dto/OrganizationShortDto';
 export * from './UserDto';

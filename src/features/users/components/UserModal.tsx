@@ -1,7 +1,9 @@
 import { Form, Input, Modal, ModalProps, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { CreateUserDto, UserDto } from 'common/dto';
 import { useEffect } from 'react';
+
+import { fetchOrganizationsActions, useOrganizationsStore } from 'store/organizations';
+import { CreateUserDto, UserDto } from 'common/dto';
 
 export type UserFormData = CreateUserDto;
 
@@ -13,6 +15,13 @@ interface UserModalProps extends Omit<ModalProps, 'onOk' | 'onCancel'> {
 
 export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) => {
     const [form] = useForm();
+    const { organizationsList } = useOrganizationsStore();
+
+    useEffect(() => {
+        if (rest.open) {
+            fetchOrganizationsActions();
+        }
+    }, [rest.open, organizationsList]);
 
     useEffect(() => {
         if (user) {
@@ -27,8 +36,11 @@ export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) =>
 
     const reset = () => form.resetFields();
 
+    const title = `${Boolean(user) ? 'Редактирование' : 'Добавление'} пользователя`;
+    const okText = Boolean(user) ? 'Сохранить' : 'Добавить';
+
     return (
-      <Modal {...rest} title="Пользователь" onOk={form.submit} onCancel={onClose} afterClose={reset}>
+      <Modal {...rest} title={title} onOk={form.submit} okText={okText} onCancel={onClose} afterClose={reset}>
         <Form
             form={form}
             onFinish={onSubmit}
@@ -39,7 +51,7 @@ export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) =>
                 name="lastName"
                 rules={[{ required: true }]}
             >
-                <Input placeholder="Иванов" />
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -47,25 +59,25 @@ export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) =>
                 name="firstName"
                 rules={[{ required: true }]}
             >
-                <Input placeholder="Иван" />
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Отчество"
                 name="middleName"
             >
-                <Input placeholder="Иванович" />
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Организация"
                 name="organizationId"
             >
-                <Select placeholder="Выберите из списка">
-                    <Select.Option>111</Select.Option>
-                    <Select.Option>222</Select.Option>
-                    <Select.Option>333</Select.Option>
-                </Select>
+                <Select
+                    placeholder="Выберите из списка"
+                    options={organizationsList}
+                    fieldNames={{ label: 'fullName', value: 'id' }}
+                />
             </Form.Item>
 
             <Form.Item
@@ -73,7 +85,7 @@ export const UserModal = ({ user, onClose, onSave, ...rest }: UserModalProps) =>
                 name="email"
                 rules={[{ required: true }]}
             >
-                <Input placeholder="ivanov@mail.ru" />
+                <Input />
             </Form.Item>
         </Form>
       </Modal>

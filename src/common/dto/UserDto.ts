@@ -2,8 +2,9 @@ export interface UserDto {
     id: number;
     firstName: string;
     lastName: string;
-    middleName: string;
+    patronymic: string;
     organizationId: number;
+    organizationName: string;
     email: string;
 }
 

@@ -1,9 +1,10 @@
-import { IdNameDto } from 'common/dto';
+import { OrganizationShortDto } from 'common/dto';
 
 class OrganizationsApi {
-    getOrganizations(): Promise<IdNameDto[]> {
+    getOrganizations(): Promise<OrganizationShortDto[]> {
         return fetch('/mock/organizations.json')
-            .then(response => response.json());
+            .then(response => response.json())
+            .then(data => data.organizations);
     }
 }
 

@@ -19,13 +19,13 @@ export const UsersTable = ({ onUserEdit }: UsersTableProps) => {
             {
                 title: 'Пользователь',
                 key: 'user',
-                render: (user: UserDto) => `${user.lastName} ${user.firstName} ${user.middleName}`,
+                render: (user: UserDto) => `${user.lastName} ${user.firstName} ${user.patronymic ? user.patronymic : ''}`,
             },
             {
                 title: 'Организация',
                 key: 'organization',
-                dataIndex: 'organizationId',
-                width: '30%'
+                dataIndex: 'organizationName',
+                width: '25%'
             },
             {
                 title: 'Email',

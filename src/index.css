@@ -1,14 +1,47 @@
 body {
+  color: #012d55;
   background: #F6F7FC;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', sans-serif;
+}
+.ant-page-header {
+  padding-left: 0;
+  padding-right: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.ant-card {
+  border-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 3%);
+}
+
+.ant-modal-content {
+  border-radius: 16px;
+}
+
+.ant-modal-header {
+  border-radius: 16px 16px 0 0;
+}
+
+.ant-form-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.ant-form-item-explain {
+  padding-top: 2px;
+}
+
+.ant-form-item-explain-error {
+  font-size: 12px;
+}
+
+.ant-input,
+.ant-btn,
+.ant-input-affix-wrapper,
+.ant-input-number-affix-wrapper,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: 8px;
+}
+
+.ant-table-tbody .ant-table-row:last-child .ant-table-cell {
+  border-bottom: none;
 }
